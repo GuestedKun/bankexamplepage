@@ -268,7 +268,7 @@
             if (pinVerified) {
                 currentInput = '';
                 currentMode = 'withdraw';
-                updateScreen('Pon tu valor para depositar:');
+                updateScreen('Pon tu valor para retirar:');
             } else {
                 updateScreen('Por favor pon tu primero');
             }
@@ -357,7 +357,7 @@
                         });
                         updateScreen(`Deposito: $${amount.toFixed(2)}\nNuevo balance: $${accountBalance.toFixed(2)}\n\nGracias por tu deposito`);
                     } else {
-                        updateScreen('Invalid amount');
+                        updateScreen('monto invalido');
                     }
                     currentInput = '';
                 }
@@ -370,9 +370,9 @@
 
         function printReceipt() {
             let receiptText = "===== RECIBO DE TRANSACCION =====\n";
-            receiptText += `Date: ${new Date().toLocaleString()}\n`;
-            receiptText += `Current Balance: $${accountBalance.toFixed(2)}\n\n`;
-            receiptText += "Recent Transactions:\n";
+            receiptText += `Dia: ${new Date().toLocaleString()}\n`;
+            receiptText += `Balance: $${accountBalance.toFixed(2)}\n\n`;
+            receiptText += "Transacciones recientes:\n";
             
             const recentTransactions = transactionHistory.slice(-3);
             recentTransactions.forEach((transaction, index) => {
