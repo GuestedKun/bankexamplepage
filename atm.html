@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATM UNARED</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a2e;
+            background-image: linear-gradient(45deg, #1a1a2e, #16213e);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #fff;
+        }
+        
+        .atm-machine {
+            width: 100%;
+            max-width: 400px;
+            background-color: #333;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.7);
+            border: 2px solid #555;
+        }
+        
+        .atm-brand {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #e6e6e6;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255,255,255,0.3);
+        }
+
+        .atm-screen {
+            background-color: #222;
+            border: 8px solid #444;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .screen-display {
+            background-color: #c1e6c0;
+            color: #333;
+            font-family: 'Courier New', monospace;
+            padding: 15px;
+            border-radius: 3px;
+            height: 150px;
+            overflow-y: auto;
+        }
+        
+        .atm-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .keypad-btn {
+            background-color: #555;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .keypad-btn:hover {
+            background-color: #666;
+        }
+        
+        .keypad-btn:active {
+            background-color: #777;
+            transform: translateY(1px);
+        }
+        
+        .function-btn {
+            background-color: #007bff;
+        }
+        
+        .clear-btn {
+            background-color: #dc3545;
+        }
+        
+        .enter-btn {
+            background-color: #28a745;
+        }
+        
+        .card-slot {
+            background-color: #222;
+            border: 2px solid #444;
+            height: 10px;
+            margin-bottom: 15px;
+            border-radius: 3px;
+            position: relative;
+        }
+        
+        .card-slot:before {
+            content: "INSERT CARD";
+            position: absolute;
+            font-size: 8px;
+            color: #666;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .cash-dispenser {
+            background-color: #222;
+            border: 2px solid #444;
+            height: 15px;
+            margin-top: 15px;
+            border-radius: 3px;
+            position: relative;
+        }
+        
+        .cash-dispenser:before {
+            content: "CASH DISPENSER";
+            position: absolute;
+            font-size: 8px;
+            color: #666;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .action-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .action-btn:hover {
+            background-color: #0069d9;
+        }
+        
+        .action-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .deposit-btn {
+            background-color: #28a745;
+        }
+        
+        .withdraw-btn {
+            background-color: #fd7e14;
+        }
+
+        @media (max-width: 480px) {
+            .atm-machine {
+                max-width: 320px;
+                padding: 15px;
+            }
+            
+            .keypad-btn {
+                padding: 10px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="atm-machine">
+        <div class="atm-brand">UNARED ATM</div>
+        <div class="card-slot"></div>
+        <div class="atm-screen">
+            <div class="screen-display" id="screen">
+                Bienvenido al ATM
+                Porfavor pon tu PIN
+            </div>
+        </div>
+        
+        <div class="atm-buttons">
+            <button class="keypad-btn">1</button>
+            <button class="keypad-btn">2</button>
+            <button class="keypad-btn">3</button>
+            <button class="keypad-btn">4</button>
+            <button class="keypad-btn">5</button>
+            <button class="keypad-btn">6</button>
+            <button class="keypad-btn">7</button>
+            <button class="keypad-btn">8</button>
+            <button class="keypad-btn">9</button>
+            <button class="keypad-btn clear-btn">C</button>
+            <button class="keypad-btn">0</button>
+            <button class="keypad-btn enter-btn">E</button>
+        </div>
+        
+        <div class="action-buttons">
+            <button class="action-btn withdraw-btn" id="withdraw">Retirar</button>
+            <button class="action-btn deposit-btn" id="deposit">Depositar</button>
+            <button class="action-btn" id="balance">Ver balance</button>
+            <button class="action-btn" id="receipt">Imprimir recibo</button>
+        </div>
+        
+        <div class="cash-dispenser"></div>
+    </div>
+
+    <script>
+        const screen = document.getElementById('screen');
+        const keypadButtons = document.querySelectorAll('.keypad-btn');
+        const withdrawBtn = document.getElementById('withdraw');
+        const depositBtn = document.getElementById('deposit');
+        const balanceBtn = document.getElementById('balance');
+        const receiptBtn = document.getElementById('receipt');
+        
+        let currentInput = '';
+        let pinVerified = false;
+        let accountBalance = 100000.00;
+        let transactionHistory = [];
+        let currentMode = 'pin'; // pin, withdraw, deposit :)
+        const correctPin = '1234';
+
+        // Handle keypad button clicks
+        keypadButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                if (button.textContent === 'C') {
+                    // Clear button
+                    currentInput = '';
+                    if (currentMode === 'pin') {
+                        updateScreen('PIN: ');
+                    } else if (currentMode === 'withdraw') {
+                        updateScreen('Valor para retirar:');
+                    } else if (currentMode === 'deposit') {
+                        updateScreen('Valor para depositar:');
+                    }
+                } else if (button.textContent === 'E') {
+                    // Enter button
+                    handleEnter();
+                } else {
+                    // Number buttons
+                    if ((currentMode === 'pin' && currentInput.length < 4) || 
+                        (currentMode !== 'pin' && currentInput.length < 10)) {
+                        currentInput += button.textContent;
+                        if (currentMode === 'pin') {
+                            updateScreen('PIN: ' + '*'.repeat(currentInput.length));
+                        } else if (currentMode === 'withdraw') {
+                            updateScreen('Valor: $' + currentInput);
+                        } else if (currentMode === 'deposit') {
+                            updateScreen('Valor: $' + currentInput);
+                        }
+                    }
+                }
+            });
+        });
+
+        //  action buttons
+        withdrawBtn.addEventListener('click', () => {
+            if (pinVerified) {
+                currentInput = '';
+                currentMode = 'withdraw';
+                updateScreen('Pon tu valor para depositar:');
+            } else {
+                updateScreen('Por favor pon tu primero');
+            }
+        });
+
+        depositBtn.addEventListener('click', () => {
+            if (pinVerified) {
+                currentInput = '';
+                currentMode = 'deposit';
+                updateScreen('Pon tu valor para depositar:');
+            } else {
+                updateScreen('Porfavor pon tu pin primero');
+            }
+        });
+
+        balanceBtn.addEventListener('click', () => {
+            if (pinVerified) {
+                updateScreen(`Tu balance es: $${accountBalance.toFixed(2)}`);
+            } else {
+                updateScreen('Por favor pon tu pin primero');
+            }
+        });
+
+        receiptBtn.addEventListener('click', () => {
+            if (pinVerified && transactionHistory.length > 0) {
+                printReceipt();
+            } else if (pinVerified) {
+                updateScreen('No hay transacciones para imprimir');
+            } else {
+                updateScreen('Por favor pon tu pin primero');
+            }
+        });
+
+        function handleEnter() {
+            if (currentMode === 'pin') {
+                // PIN verification
+                if (currentInput === correctPin) {
+                    pinVerified = true;
+                    updateScreen('PIN acceptado\nElije una transaccion');
+                } else {
+                    updateScreen('Invalido PIN\nIntentalo denuevo');
+                }
+                currentInput = '';
+            } else if (currentMode === 'withdraw') {
+                // Process withdrawal
+                if (currentInput !== '') {
+                    const amount = parseFloat(currentInput);
+                    if (!isNaN(amount) && amount > 0) {
+                        if (amount <= accountBalance) {
+                            accountBalance -= amount;
+                            const date = new Date();
+                            transactionHistory.push({
+                                type: 'Withdrawal',
+                                amount: amount,
+                                date: date.toLocaleString(),
+                                balance: accountBalance
+                            });
+                            updateScreen(`Withdrawal: $${amount.toFixed(2)}\nRemaining balance: $${accountBalance.toFixed(2)}\n\nPorfavor toma tu dinero`);
+                            
+                            // Simulate cash dispensing
+                            const cashDispenser = document.querySelector('.cash-dispenser');
+                            cashDispenser.style.backgroundColor = '#28a745';
+                            setTimeout(() => {
+                                cashDispenser.style.backgroundColor = '#222';
+                            }, 2000);
+                        } else {
+                            updateScreen('Fondos insuficientes');
+                        }
+                    } else {
+                        updateScreen('Valor invalido');
+                    }
+                    currentInput = '';
+                }
+            } else if (currentMode === 'deposit') {
+                // Process deposit
+                if (currentInput !== '') {
+                    const amount = parseFloat(currentInput);
+                    if (!isNaN(amount) && amount > 0) {
+                        accountBalance += amount;
+                        const date = new Date();
+                        transactionHistory.push({
+                            type: 'Deposit',
+                            amount: amount,
+                            date: date.toLocaleString(),
+                            balance: accountBalance
+                        });
+                        updateScreen(`Deposit: $${amount.toFixed(2)}\nNew balance: $${accountBalance.toFixed(2)}\n\nGracias por tu deposito`);
+                    } else {
+                        updateScreen('Invalid amount');
+                    }
+                    currentInput = '';
+                }
+            }
+            // Reset to default mode after transaction
+            if (currentMode !== 'pin') {
+                currentMode = 'default';
+            }
+        }
+
+        function printReceipt() {
+            let receiptText = "===== RECIBO DE TRANSACCION =====\n";
+            receiptText += `Date: ${new Date().toLocaleString()}\n`;
+            receiptText += `Current Balance: $${accountBalance.toFixed(2)}\n\n`;
+            receiptText += "Recent Transactions:\n";
+            
+            const recentTransactions = transactionHistory.slice(-3);
+            recentTransactions.forEach((transaction, index) => {
+                receiptText += `${index + 1}. ${transaction.type}: $${transaction.amount.toFixed(2)}\n   ${transaction.date}\n`;
+            });
+            
+            receiptText += "\nGracias por usar UNARED!";
+            updateScreen(receiptText);
+        }
+
+        function updateScreen(message) {
+            screen.textContent = message;
+        }
+    </script>
+</body>
+</html>
+
+// cooked ;)
