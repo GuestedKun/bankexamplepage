@@ -326,7 +326,7 @@
                                 date: date.toLocaleString(),
                                 balance: accountBalance
                             });
-                            updateScreen(`Withdrawal: $${amount.toFixed(2)}\nRemaining balance: $${accountBalance.toFixed(2)}\n\nPorfavor toma tu dinero`);
+                            updateScreen(`Retiraste: $${amount.toFixed(2)}\nde Balance: $${accountBalance.toFixed(2)}\n\nPorfavor toma tu dinero`);
                             
                             // Simulate cash dispensing
                             const cashDispenser = document.querySelector('.cash-dispenser');
@@ -355,7 +355,7 @@
                             date: date.toLocaleString(),
                             balance: accountBalance
                         });
-                        updateScreen(`Deposit: $${amount.toFixed(2)}\nNew balance: $${accountBalance.toFixed(2)}\n\nGracias por tu deposito`);
+                        updateScreen(`Deposito: $${amount.toFixed(2)}\nNuevo balance: $${accountBalance.toFixed(2)}\n\nGracias por tu deposito`);
                     } else {
                         updateScreen('Invalid amount');
                     }
