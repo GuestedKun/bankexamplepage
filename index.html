@@ -1,30 +1,116 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ATM UNARED</title>
+    <title>ATM</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #1a1a2e;
-            background-image: linear-gradient(45deg, #1a1a2e, #16213e);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #28a745;
+            --accent-color: #fd7e14;
+            --dark-color: #1a1a2e;
+            --light-color: #f8f9fa;
+            --danger-color: #dc3545;
+            --border-radius: 8px;
+        }
+        
+        * {
+            box-sizing: border-box;
             margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-color);
+            background-image: linear-gradient(45deg, #1a1a2e, #16213e);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .header {
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
             color: #fff;
         }
         
+        .nav-menu {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .nav-button {
+            background-color: transparent;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-button.active {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
         .atm-machine {
-            width: 100%;
-            max-width: 400px;
+            flex: 1;
+            min-width: 320px;
             background-color: #333;
-            border-radius: 10px;
+            border-radius: var(--border-radius);
             padding: 20px;
             box-shadow: 0 0 30px rgba(0,0,0,0.7);
             border: 2px solid #555;
+        }
+        
+        .data-panel {
+            flex: 1;
+            min-width: 350px;
+            background-color: rgba(0, 0, 0, 0.4);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            display: none;
+        }
+        
+        .panel-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #fff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
         }
         
         .atm-brand {
@@ -51,6 +137,8 @@
             border-radius: 3px;
             height: 150px;
             overflow-y: auto;
+            font-size: 14px;
+            line-height: 1.4;
         }
         
         .atm-buttons {
@@ -81,16 +169,12 @@
             transform: translateY(1px);
         }
         
-        .function-btn {
-            background-color: #007bff;
-        }
-        
         .clear-btn {
-            background-color: #dc3545;
+            background-color: var(--danger-color);
         }
         
         .enter-btn {
-            background-color: #28a745;
+            background-color: var(--secondary-color);
         }
         
         .card-slot {
@@ -103,7 +187,7 @@
         }
         
         .card-slot:before {
-            content: "Inserte su Tarjeta";
+            content: "INSERT CARD";
             position: absolute;
             font-size: 8px;
             color: #666;
@@ -122,7 +206,7 @@
         }
         
         .cash-dispenser:before {
-            content: "Dispensador de Dinero";
+            content: "CASH DISPENSER";
             position: absolute;
             font-size: 8px;
             color: #666;
@@ -139,7 +223,7 @@
         }
         
         .action-btn {
-            background-color: #007bff;
+            background-color: var(--primary-color);
             color: white;
             border: none;
             padding: 10px 5px;
@@ -151,7 +235,7 @@
         }
         
         .action-btn:hover {
-            background-color: #0069d9;
+            filter: brightness(1.1);
         }
         
         .action-btn:active {
@@ -159,235 +243,1096 @@
         }
         
         .deposit-btn {
-            background-color: #28a745;
+            background-color: var(--secondary-color);
         }
         
         .withdraw-btn {
-            background-color: #fd7e14;
+            background-color: var(--accent-color);
         }
-
-        @media (max-width: 480px) {
-            .atm-machine {
-                max-width: 320px;
-                padding: 15px;
+        
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            filter: brightness(1.1);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+        
+        .btn-success {
+            background-color: var(--secondary-color);
+        }
+        
+        .data-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .form-label {
+            font-size: 14px;
+            color: #ddd;
+        }
+        
+        .form-control {
+            padding: 10px;
+            border-radius: var(--border-radius);
+            border: 1px solid #666;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 14px;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            overflow: auto;
+        }
+        
+        .data-table th, 
+        .data-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .data-table th {
+            background-color: rgba(0, 0, 0, 0.3);
+            color: #fff;
+        }
+        
+        .data-table tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .data-table-container {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        
+        .action-column {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .action-icon {
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 3px;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .action-icon:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .action-icon.edit {
+            color: #ffc107;
+        }
+        
+        .action-icon.delete {
+            color: #dc3545;
+        }
+        
+        .bill-denomination {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .bill-label {
+            min-width: 100px;
+        }
+        
+        .bill-count {
+            width: 60px;
+            padding: 5px;
+            border-radius: 3px;
+            border: 1px solid #666;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        
+        .voucher-container {
+            background-color: #fff;
+            color: #333;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-family: 'Courier New', monospace;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .voucher-header {
+            text-align: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #999;
+        }
+        
+        .voucher-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .voucher-bank {
+            font-size: 16px;
+        }
+        
+        .voucher-info {
+            margin-bottom: 15px;
+        }
+        
+        .voucher-info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .voucher-bills {
+            margin-bottom: 15px;
+            padding: 10px 0;
+            border-top: 1px dashed #999;
+            border-bottom: 1px dashed #999;
+        }
+        
+        .voucher-total {
+            text-align: right;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .voucher-footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
             }
             
-            .keypad-btn {
-                padding: 10px;
-                font-size: 16px;
+            .atm-machine,
+            .data-panel {
+                min-width: 100%;
+            }
+            
+            .nav-menu {
+                flex-wrap: wrap;
+            }
+            
+            .nav-button {
+                font-size: 12px;
+                padding: 6px 10px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="atm-machine">
-        <div class="atm-brand">UNARED ATM</div>
-        <div class="card-slot"></div>
-        <div class="atm-screen">
-            <div class="screen-display" id="screen">
-                Bienvenido al ATM
-                Porfavor pon tu PIN
+    <div class="container">
+        <div class="header">
+            <div class="logo">Sistema ATM</div>
+            <div class="nav-menu">
+                <button class="nav-button active" id="nav-atm">ATM</button>
+                <button class="nav-button" id="nav-clients">Clientes</button>
+                <button class="nav-button" id="nav-products">Productos</button>
+                <button class="nav-button" id="nav-vouchers">Vouchers</button>
             </div>
         </div>
         
-        <div class="atm-buttons">
-            <button class="keypad-btn">1</button>
-            <button class="keypad-btn">2</button>
-            <button class="keypad-btn">3</button>
-            <button class="keypad-btn">4</button>
-            <button class="keypad-btn">5</button>
-            <button class="keypad-btn">6</button>
-            <button class="keypad-btn">7</button>
-            <button class="keypad-btn">8</button>
-            <button class="keypad-btn">9</button>
-            <button class="keypad-btn clear-btn">C</button>
-            <button class="keypad-btn">0</button>
-            <button class="keypad-btn enter-btn">E</button>
+        <div class="content">
+            <!-- ATM Machine -->
+            <div class="atm-machine">
+                <div class="atm-brand">BANCO DIGITAL ATM</div>
+                <div class="card-slot"></div>
+                <div class="atm-screen">
+                    <div class="screen-display" id="screen">
+                        Bienvenido al ATM
+                        Por favor ingrese su PIN
+                    </div>
+                </div>
+                
+                <div class="atm-buttons">
+                    <button class="keypad-btn">1</button>
+                    <button class="keypad-btn">2</button>
+                    <button class="keypad-btn">3</button>
+                    <button class="keypad-btn">4</button>
+                    <button class="keypad-btn">5</button>
+                    <button class="keypad-btn">6</button>
+                    <button class="keypad-btn">7</button>
+                    <button class="keypad-btn">8</button>
+                    <button class="keypad-btn">9</button>
+                    <button class="keypad-btn clear-btn">C</button>
+                    <button class="keypad-btn">0</button>
+                    <button class="keypad-btn enter-btn">E</button>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="action-btn withdraw-btn" id="withdraw">Retirar</button>
+                    <button class="action-btn deposit-btn" id="deposit">Depositar</button>
+                    <button class="action-btn" id="balance">Consultar Saldo</button>
+                    <button class="action-btn" id="voucher">Imprimir Voucher</button>
+                </div>
+                
+                <div class="cash-dispenser"></div>
+            </div>
+            
+            <!-- Clients Panel -->
+            <div class="data-panel" id="clients-panel">
+                <h2 class="panel-title">Gestión de Clientes</h2>
+                <button class="btn btn-success" id="add-client-btn">Agregar Cliente</button>
+                
+                <div id="client-form-container" class="hidden">
+                    <form class="data-form" id="client-form">
+                        <input type="hidden" id="client-id">
+                        <div class="form-group">
+                            <label class="form-label" for="client-name">Nombre</label>
+                            <input type="text" class="form-control" id="client-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="client-account">Número de Cuenta</label>
+                            <input type="text" class="form-control" id="client-account" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="client-pin">PIN</label>
+                            <input type="password" class="form-control" id="client-pin" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="client-balance">Saldo Inicial</label>
+                            <input type="number" class="form-control" id="client-balance" required>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-danger" id="cancel-client-btn">Cancelar</button>
+                            <button type="submit" class="btn btn-success">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="data-table-container">
+                    <table class="data-table" id="clients-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Cuenta</th>
+                                <th>Saldo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clients-table-body">
+                             <!-- Los clientes se agregarán aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Products Panel -->
+            <div class="data-panel" id="products-panel">
+                <h2 class="panel-title">Gestión de Productos</h2>
+                <button class="btn btn-success" id="add-product-btn">Agregar Producto</button>
+                
+                <div id="product-form-container" class="hidden">
+                    <form class="data-form" id="product-form">
+                        <input type="hidden" id="product-id">
+                        <div class="form-group">
+                            <label class="form-label" for="product-name">Nombre del Producto</label>
+                            <input type="text" class="form-control" id="product-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="product-description">Descripción</label>
+                            <textarea class="form-control" id="product-description" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="product-price">Precio</label>
+                            <input type="number" class="form-control" id="product-price" required step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="product-stock">Stock</label>
+                            <input type="number" class="form-control" id="product-stock" required>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-danger" id="cancel-product-btn">Cancelar</button>
+                            <button type="submit" class="btn btn-success">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="data-table-container">
+                    <table class="data-table" id="products-table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Precio</th>
+                                <th>Stock</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-table-body">
+                            <!-- Product rows will be added here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Vouchers Panel -->
+            <div class="data-panel" id="vouchers-panel">
+                <h2 class="panel-title">Vouchers de Transacciones</h2>
+                
+                <div class="data-table-container">
+                    <table class="data-table" id="vouchers-table">
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Cuenta</th>
+                                <th>Fecha</th>
+                                <th>Monto</th>
+                                <th>Tipo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vouchers-table-body">
+                           <!-- Voucher de transacciones -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="voucher-detail" class="hidden">
+                    <h3 style="margin: 20px 0 10px 0;">Detalle del Voucher</h3>
+                    <div class="voucher-container">
+                        <div class="voucher-header">
+                            <div class="voucher-title">COMPROBANTE DE TRANSACCIÓN</div>
+                            <div class="voucher-bank">BANCO DIGITAL</div>
+                        </div>
+                        <div class="voucher-info" id="voucher-info-content">
+                            <!-- Voucher info will be added here -->
+                        </div>
+                        <div class="voucher-bills" id="voucher-bills-content">
+                            <!-- Bill denominations will be added here -->
+                        </div>
+                        <div class="voucher-total" id="voucher-total-content">
+                            <!-- Total amount will be added here -->
+                        </div>
+                        <div class="voucher-footer">
+                            Gracias por utilizar nuestros servicios
+                            <br>
+                            * Conserve este comprobante para cualquier reclamo *
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn" id="close-voucher-btn">Cerrar</button>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <div class="action-buttons">
-            <button class="action-btn withdraw-btn" id="withdraw">Retirar</button>
-            <button class="action-btn deposit-btn" id="deposit">Depositar</button>
-            <button class="action-btn" id="balance">Ver balance</button>
-            <button class="action-btn" id="receipt">Imprimir recibo</button>
-        </div>
-        
-        <div class="cash-dispenser"></div>
     </div>
 
     <script>
+        // DOM Elements
         const screen = document.getElementById('screen');
         const keypadButtons = document.querySelectorAll('.keypad-btn');
         const withdrawBtn = document.getElementById('withdraw');
         const depositBtn = document.getElementById('deposit');
         const balanceBtn = document.getElementById('balance');
-        const receiptBtn = document.getElementById('receipt');
+        const voucherBtn = document.getElementById('voucher');
         
+        // Navigation Elements
+        const navButtons = document.querySelectorAll('.nav-button');
+        const navAtm = document.getElementById('nav-atm');
+        const navClients = document.getElementById('nav-clients');
+        const navProducts = document.getElementById('nav-products');
+        const navVouchers = document.getElementById('nav-vouchers');
+        
+        // Panel Elements
+        const atmMachine = document.querySelector('.atm-machine');
+        const clientsPanel = document.getElementById('clients-panel');
+        const productsPanel = document.getElementById('products-panel');
+        const vouchersPanel = document.getElementById('vouchers-panel');
+        
+        // Client Form Elements
+        const clientForm = document.getElementById('client-form');
+        const clientFormContainer = document.getElementById('client-form-container');
+        const addClientBtn = document.getElementById('add-client-btn');
+        const cancelClientBtn = document.getElementById('cancel-client-btn');
+        const clientIdInput = document.getElementById('client-id');
+        const clientNameInput = document.getElementById('client-name');
+        const clientAccountInput = document.getElementById('client-account');
+        const clientPinInput = document.getElementById('client-pin');
+        const clientBalanceInput = document.getElementById('client-balance');
+        const clientsTableBody = document.getElementById('clients-table-body');
+        
+        // Product Form Elements
+        const productForm = document.getElementById('product-form');
+        const productFormContainer = document.getElementById('product-form-container');
+        const addProductBtn = document.getElementById('add-product-btn');
+        const cancelProductBtn = document.getElementById('cancel-product-btn');
+        const productIdInput = document.getElementById('product-id');
+        const productNameInput = document.getElementById('product-name');
+        const productDescriptionInput = document.getElementById('product-description');
+        const productPriceInput = document.getElementById('product-price');
+        const productStockInput = document.getElementById('product-stock');
+        const productsTableBody = document.getElementById('products-table-body');
+        
+        // Voucher Elements
+        const vouchersTableBody = document.getElementById('vouchers-table-body');
+        const voucherDetail = document.getElementById('voucher-detail');
+        const voucherInfoContent = document.getElementById('voucher-info-content');
+        const voucherBillsContent = document.getElementById('voucher-bills-content');
+        const voucherTotalContent = document.getElementById('voucher-total-content');
+        const closeVoucherBtn = document.getElementById('close-voucher-btn');
+        
+        // ATM Variables
         let currentInput = '';
         let pinVerified = false;
-        let accountBalance = 100000.00;
-        let transactionHistory = [];
-        let currentMode = 'pin'; // pin, withdraw, deposit :)
-        const correctPin = '1234';
-
-        // Handle keypad button clicks
-        keypadButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                if (button.textContent === 'C') {
-                    // Clear button
-                    currentInput = '';
-                    if (currentMode === 'pin') {
-                        updateScreen('PIN: ');
-                    } else if (currentMode === 'withdraw') {
-                        updateScreen('Valor para retirar:');
-                    } else if (currentMode === 'deposit') {
-                        updateScreen('Valor para depositar:');
-                    }
-                } else if (button.textContent === 'E') {
-                    // Enter button
-                    handleEnter();
-                } else {
-                    // Number buttons
-                    if ((currentMode === 'pin' && currentInput.length < 4) || 
-                        (currentMode !== 'pin' && currentInput.length < 10)) {
-                        currentInput += button.textContent;
+        let currentClientIndex = -1;
+        let currentMode = 'pin'; // pin, withdraw, deposit
+        
+        // Database
+        let clients = [
+            { id: 1, name: 'Juan Pérez', account: '1001-2345', pin: '1234', balance: 2500 },
+            { id: 2, name: 'María García', account: '1001-6789', pin: '5678', balance: 3800 },
+            { id: 3, name: 'Carlos Rodríguez', account: '1001-9012', pin: '4321', balance: 1200 }
+        ];
+        
+        let products = [
+            { id: 1, name: 'Tarjeta de Débito', description: 'Tarjeta para acceso a cajeros automáticos', price: 5.00, stock: 100 },
+            { id: 2, name: 'Seguro de Cuenta', description: 'Protección contra fraudes', price: 12.50, stock: 50 },
+            { id: 3, name: 'Chequera', description: 'Libreta de cheques personales', price: 15.00, stock: 75 }
+        ];
+        
+        let vouchers = [];
+        
+        // Bill denominations
+        const billDenominations = [100, 50, 20, 10, 5, 1];
+        
+        // Initialize the application
+        function init() {
+            // Load data from localStorage if available
+            loadData();
+            
+            // Set up event listeners
+            setupEventListeners();
+            
+            // Render initial data
+            renderClientTable();
+            renderProductTable();
+            renderVoucherTable();
+        }
+        
+        // Load data from localStorage
+        function loadData() {
+            if (localStorage.getItem('atmClients')) {
+                clients = JSON.parse(localStorage.getItem('atmClients'));
+            }
+            
+            if (localStorage.getItem('atmProducts')) {
+                products = JSON.parse(localStorage.getItem('atmProducts'));
+            }
+            
+            if (localStorage.getItem('atmVouchers')) {
+                vouchers = JSON.parse(localStorage.getItem('atmVouchers'));
+            }
+        }
+        
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('atmClients', JSON.stringify(clients));
+            localStorage.setItem('atmProducts', JSON.stringify(products));
+            localStorage.setItem('atmVouchers', JSON.stringify(vouchers));
+        }
+        
+        // Set up event listeners
+        function setupEventListeners() {
+            // ATM buttons
+            keypadButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    if (button.textContent === 'C') {
+                        // Clear button
+                        currentInput = '';
                         if (currentMode === 'pin') {
-                            updateScreen('PIN: ' + '*'.repeat(currentInput.length));
+                            updateScreen('PIN: ');
                         } else if (currentMode === 'withdraw') {
-                            updateScreen('Valor: $' + currentInput);
+                            updateScreen('Ingrese monto a retirar:');
                         } else if (currentMode === 'deposit') {
-                            updateScreen('Valor: $' + currentInput);
+                            updateScreen('Ingrese monto a depositar:');
+                        }
+                    } else if (button.textContent === 'E') {
+                        // Enter button
+                        handleEnter();
+                    } else {
+                        // Number buttons
+                        if ((currentMode === 'pin' && currentInput.length < 4) || 
+                            (currentMode !== 'pin' && currentInput.length < 10)) {
+                            currentInput += button.textContent;
+                            if (currentMode === 'pin') {
+                                updateScreen('PIN: ' + '*'.repeat(currentInput.length));
+                            } else if (currentMode === 'withdraw') {
+                                updateScreen('Monto: $' + currentInput);
+                            } else if (currentMode === 'deposit') {
+                                updateScreen('Monto: $' + currentInput);
+                            }
                         }
                     }
-                }
+                });
             });
-        });
-
-        //  action buttons
-        withdrawBtn.addEventListener('click', () => {
-            if (pinVerified) {
-                currentInput = '';
-                currentMode = 'withdraw';
-                updateScreen('Pon tu valor para retirar:');
-            } else {
-                updateScreen('Por favor pon tu primero');
-            }
-        });
-
-        depositBtn.addEventListener('click', () => {
-            if (pinVerified) {
-                currentInput = '';
-                currentMode = 'deposit';
-                updateScreen('Pon tu valor para depositar:');
-            } else {
-                updateScreen('Porfavor pon tu pin primero');
-            }
-        });
-
-        balanceBtn.addEventListener('click', () => {
-            if (pinVerified) {
-                updateScreen(`Tu balance es: $${accountBalance.toFixed(2)}`);
-            } else {
-                updateScreen('Por favor pon tu pin primero');
-            }
-        });
-
-        receiptBtn.addEventListener('click', () => {
-            if (pinVerified && transactionHistory.length > 0) {
-                printReceipt();
-            } else if (pinVerified) {
-                updateScreen('No hay transacciones para imprimir');
-            } else {
-                updateScreen('Por favor pon tu pin primero');
-            }
-        });
-
-        function handleEnter() {
-            if (currentMode === 'pin') {
-                // PIN verification
-                if (currentInput === correctPin) {
-                    pinVerified = true;
-                    updateScreen('PIN acceptado\nElije una transaccion');
+            
+            // ATM action buttons
+            withdrawBtn.addEventListener('click', () => {
+                if (pinVerified) {
+                    currentInput = '';
+                    currentMode = 'withdraw';
+                    updateScreen('Ingrese monto a retirar:');
                 } else {
-                    updateScreen('Invalido PIN\nIntentalo denuevo');
+                    updateScreen('Por favor ingrese su PIN primero');
                 }
-                currentInput = '';
-            } else if (currentMode === 'withdraw') {
-                // Process withdrawal
-                if (currentInput !== '') {
-                    const amount = parseFloat(currentInput);
-                    if (!isNaN(amount) && amount > 0) {
-                        if (amount <= accountBalance) {
-                            accountBalance -= amount;
-                            const date = new Date();
-                            transactionHistory.push({
-                                type: 'Retiro',
-                                amount: amount,
-                                date: date.toLocaleString(),
-                                balance: accountBalance
-                            });
-                            updateScreen(`Retiraste: $${amount.toFixed(2)}\nde Balance: $${accountBalance.toFixed(2)}\n\nPorfavor toma tu dinero`);
-                            
-                            // Simulate cash dispensing
-                            const cashDispenser = document.querySelector('.cash-dispenser');
-                            cashDispenser.style.backgroundColor = '#28a745';
-                            setTimeout(() => {
-                                cashDispenser.style.backgroundColor = '#222';
-                            }, 2000);
-                        } else {
-                            updateScreen('Fondos insuficientes');
-                        }
-                    } else {
-                        updateScreen('Valor invalido');
-                    }
-                    currentInput = '';
-                }
-            } else if (currentMode === 'deposit') {
-                // Process deposit
-                if (currentInput !== '') {
-                    const amount = parseFloat(currentInput);
-                    if (!isNaN(amount) && amount > 0) {
-                        accountBalance += amount;
-                        const date = new Date();
-                        transactionHistory.push({
-                            type: 'Deposit',
-                            amount: amount,
-                            date: date.toLocaleString(),
-                            balance: accountBalance
-                        });
-                        updateScreen(`Deposito: $${amount.toFixed(2)}\nNuevo balance: $${accountBalance.toFixed(2)}\n\nGracias por tu deposito`);
-                    } else {
-                        updateScreen('monto invalido');
-                    }
-                    currentInput = '';
-                }
-            }
-            // Reset to default mode after transaction
-            if (currentMode !== 'pin') {
-                currentMode = 'default';
-            }
-        }
-
-        function printReceipt() {
-            let receiptText = "===== RECIBO DE TRANSACCION =====\n";
-            receiptText += `Dia: ${new Date().toLocaleString()}\n`;
-            receiptText += `Balance: $${accountBalance.toFixed(2)}\n\n`;
-            receiptText += "Transacciones recientes:\n";
-            
-            const recentTransactions = transactionHistory.slice(-3);
-            recentTransactions.forEach((transaction, index) => {
-                receiptText += `${index + 1}. ${transaction.type}: $${transaction.amount.toFixed(2)}\n   ${transaction.date}\n`;
             });
             
-            receiptText += "\nGracias por usar UNARED!";
-            updateScreen(receiptText);
+            depositBtn.addEventListener('click', () => {
+                if (pinVerified) {
+                    currentInput = '';
+                    currentMode = 'deposit';
+                    updateScreen('Ingrese monto a depositar:');
+                } else {
+                    updateScreen('Por favor ingrese su PIN primero');
+                }
+            });
+            
+            balanceBtn.addEventListener('click', () => {
+                if (pinVerified) {
+                    const client = clients[currentClientIndex];
+                    updateScreen(`Saldo actual: $${client.balance.toFixed(2)}`);
+                } else {
+                    updateScreen('Por favor ingrese su PIN primero');
+                }
+            });
+            
+            voucherBtn.addEventListener('click', () => {
+                if (pinVerified) {
+                    const client = clients[currentClientIndex];
+                    const clientVouchers = vouchers.filter(v => v.accountNumber === client.account);
+                    
+                    if (clientVouchers.length > 0) {
+                        const lastVoucher = clientVouchers[clientVouchers.length - 1];
+                        printAtmVoucher(lastVoucher);
+                    } else {
+                        updateScreen('No hay transacciones recientes para imprimir');
+                    }
+                } else {
+                    updateScreen('Por favor ingrese su PIN primero');
+                }
+            });
+            
+            // Navigation buttons
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    // Hide all panels
+                    atmMachine.style.display = 'none';
+                    clientsPanel.style.display = 'none';
+                    productsPanel.style.display = 'none';
+                    vouchersPanel.style.display = 'none';
+                    
+                    // Show selected panel
+                    if (button.id === 'nav-atm') {
+                        atmMachine.style.display = 'block';
+                    } else if (button.id === 'nav-clients') {
+                        clientsPanel.style.display = 'block';
+                    } else if (button.id === 'nav-products') {
+                        productsPanel.style.display = 'block';
+                    } else if (button.id === 'nav-vouchers') {
+                        vouchersPanel.style.display = 'block';
+                    }
+                });
+            });
+            
+            // Client form buttons
+            addClientBtn.addEventListener('click', () => {
+                resetClientForm();
+                clientFormContainer.classList.remove('hidden');
+            });
+            
+            cancelClientBtn.addEventListener('click', () => {
+                clientFormContainer.classList.add('hidden');
+            });
+            
+            clientForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                saveClient();
+            });
+            
+            // Product form buttons
+            addProductBtn.addEventListener('click', () => {
+                resetProductForm();
+                productFormContainer.classList.remove('hidden');
+            });
+            
+            cancelProductBtn.addEventListener('click', () => {
+                productFormContainer.classList.add('hidden');
+            });
+            
+            productForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                saveProduct();
+            });
+            
+            // Voucher detail
+            closeVoucherBtn.addEventListener('click', () => {
+                voucherDetail.classList.add('hidden');
+            });
         }
-
+        
+        // ATM Functions
         function updateScreen(message) {
             screen.textContent = message;
         }
+        
+        function handleEnter() {
+            if (currentMode === 'pin') {
+                verifyPin();
+            } else if (currentMode === 'withdraw') {
+                processWithdrawal();
+            } else if (currentMode === 'deposit') {
+                processDeposit();
+            }
+        }
+        
+        function verifyPin() {
+            const pin = currentInput;
+            currentInput = '';
+            
+            // Find client with matching PIN
+            const clientIndex = clients.findIndex(client => client.pin === pin);
+            
+            if (clientIndex !== -1) {
+                currentClientIndex = clientIndex;
+                pinVerified = true;
+                const client = clients[clientIndex];
+                updateScreen(`Bienvenido, ${client.name}\nSeleccione una transacción`);
+            } else {
+                updateScreen('PIN inválido\nIntente nuevamente');
+            }
+        }
+        
+        function processWithdrawal() {
+            if (currentInput !== '') {
+                const amount = parseFloat(currentInput);
+                currentInput = '';
+                
+                if (!isNaN(amount) && amount > 0) {
+                    const client = clients[currentClientIndex];
+                    
+                    if (amount <= client.balance) {
+                        // Calculate bill denominations
+                        const billCounts = calculateBillCounts(amount);
+                        
+                        // Update client balance
+                        client.balance -= amount;
+                        
+                        // Create voucher
+                        const voucher = {
+                            id: generateId(vouchers),
+                            clientName: client.name,
+                            accountNumber: client.account,
+                            date: new Date().toISOString(),
+                            amount: amount,
+                            type: 'Retiro',
+                            bills: billCounts
+                        };
+                        
+                        vouchers.push(voucher);
+                        saveData();
+                        
+                        // Display success message
+                        updateScreen(`Retiro: $${amount.toFixed(2)}\nSaldo restante: $${client.balance.toFixed(2)}\n\nPor favor tome su dinero`);
+                        
+                        // Simulate cash dispensing
+                        const cashDispenser = document.querySelector('.cash-dispenser');
+                        cashDispenser.style.backgroundColor = '#28a745';
+                        setTimeout(() => {
+                            cashDispenser.style.backgroundColor = '#222';
+                        }, 2000);
+                        
+                        // Update UI
+                        renderClientTable();
+                        renderVoucherTable();
+                    } else {
+                        updateScreen('Fondos insuficientes');
+                    }
+                } else {
+                    updateScreen('Monto inválido');
+                }
+            }
+        }
+        
+        function processDeposit() {
+            if (currentInput !== '') {
+                const amount = parseFloat(currentInput);
+                currentInput = '';
+                
+                if (!isNaN(amount) && amount > 0) {
+                    const client = clients[currentClientIndex];
+                    
+                    // Update client balance
+                    client.balance += amount;
+                    
+                    // Create voucher
+                    const voucher = {
+                        id: generateId(vouchers),
+                        clientName: client.name,
+                        accountNumber: client.account,
+                        date: new Date().toISOString(),
+                        amount: amount,
+                        type: 'Depósito',
+                        bills: {} // No bill counts for deposits
+                    };
+                    
+                    vouchers.push(voucher);
+                    saveData();
+                    
+                    // Display success message
+                    updateScreen(`Depósito: $${amount.toFixed(2)}\nNuevo saldo: $${client.balance.toFixed(2)}\n\nGracias por su depósito`);
+                    
+                    // Update UI
+                    renderClientTable();
+                    renderVoucherTable();
+                } else {
+                    updateScreen('Monto inválido');
+                }
+            }
+        }
+        
+        function calculateBillCounts(amount) {
+            let remaining = amount;
+            const billCounts = {};
+            
+            // For each denomination, calculate how many bills to dispense
+            for (const bill of billDenominations) {
+                if (remaining >= bill) {
+                    const count = Math.floor(remaining / bill);
+                    billCounts[bill] = count;
+                    remaining -= count * bill;
+                } else {
+                    billCounts[bill] = 0;
+                }
+            }
+            
+            return billCounts;
+        }
+        
+        function printAtmVoucher(voucher) {
+            const date = new Date(voucher.date);
+            const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+            
+            let billDetails = '';
+            if (voucher.type === 'Retiro') {
+                billDetails = 'Desglose de billetes:\n';
+                for (const bill in voucher.bills) {
+                    if (voucher.bills[bill] > 0) {
+                        billDetails += `${voucher.bills[bill]} x $${bill} = $${(voucher.bills[bill] * parseInt(bill)).toFixed(2)}\n`;
+                    }
+                }
+            }
+            
+            const message = `=== VOUCHER DE TRANSACCIÓN ===
+            
+Cliente: ${voucher.clientName}
+Cuenta: ${voucher.accountNumber}
+Fecha: ${formattedDate}
+Tipo: ${voucher.type}
+Monto: $${voucher.amount.toFixed(2)}
+
+${billDetails}
+Gracias por utilizar nuestros servicios`;
+            
+            updateScreen(message);
+        }
+        
+        // Client Functions
+        function resetClientForm() {
+            clientIdInput.value = '';
+            clientNameInput.value = '';
+            clientAccountInput.value = '';
+            clientPinInput.value = '';
+            clientBalanceInput.value = '';
+        }
+        
+        function saveClient() {
+            const id = clientIdInput.value ? parseInt(clientIdInput.value) : generateId(clients);
+            const name = clientNameInput.value;
+            const account = clientAccountInput.value;
+            const pin = clientPinInput.value;
+            const balance = parseFloat(clientBalanceInput.value);
+            
+            if (clientIdInput.value) {
+                // Update existing client
+                const index = clients.findIndex(c => c.id === parseInt(id));
+                if (index !== -1) {
+                    clients[index] = { id, name, account, pin, balance };
+                }
+            } else {
+                // Add new client
+                clients.push({ id, name, account, pin, balance });
+            }
+            
+            saveData();
+            renderClientTable();
+            clientFormContainer.classList.add('hidden');
+        }
+        
+        function editClient(id) {
+            const client = clients.find(c => c.id === id);
+            if (client) {
+                clientIdInput.value = client.id;
+                clientNameInput.value = client.name;
+                clientAccountInput.value = client.account;
+                clientPinInput.value = client.pin;
+                clientBalanceInput.value = client.balance;
+                clientFormContainer.classList.remove('hidden');
+            }
+        }
+        
+        function deleteClient(id) {
+            if (confirm('¿Está seguro de que desea eliminar este cliente?')) {
+                clients = clients.filter(c => c.id !== id);
+                saveData();
+                renderClientTable();
+            }
+        }
+        
+        function renderClientTable() {
+            clientsTableBody.innerHTML = '';
+            
+            clients.forEach(client => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${client.name}</td>
+                    <td>${client.account}</td>
+                    <td>$${client.balance.toFixed(2)}</td>
+                    <td class="action-column">
+                        <span class="action-icon edit" onclick="editClient(${client.id})">✏️</span>
+                        <span class="action-icon delete" onclick="deleteClient(${client.id})">🗑️</span>
+                    </td>
+                `;
+                
+                clientsTableBody.appendChild(row);
+            });
+        }
+        
+        // Product Functions
+        function resetProductForm() {
+            productIdInput.value = '';
+            productNameInput.value = '';
+            productDescriptionInput.value = '';
+            productPriceInput.value = '';
+            productStockInput.value = '';
+        }
+        
+        function saveProduct() {
+            const id = productIdInput.value ? parseInt(productIdInput.value) : generateId(products);
+            const name = productNameInput.value;
+            const description = productDescriptionInput.value;
+            const price = parseFloat(productPriceInput.value);
+            const stock = parseInt(productStockInput.value);
+            
+            if (productIdInput.value) {
+                // Update existing product
+                const index = products.findIndex(p => p.id === parseInt(id));
+                if (index !== -1) {
+                    products[index] = { id, name, description, price, stock };
+                }
+            } else {
+                // Add new product
+                products.push({ id, name, description, price, stock });
+            }
+            
+            saveData();
+            renderProductTable();
+            productFormContainer.classList.add('hidden');
+        }
+        
+        function editProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (product) {
+                productIdInput.value = product.id;
+                productNameInput.value = product.name;
+                productDescriptionInput.value = product.description;
+                productPriceInput.value = product.price;
+                productStockInput.value = product.stock;
+                productFormContainer.classList.remove('hidden');
+            }
+        }
+        
+        function deleteProduct(id) {
+            if (confirm('¿Está seguro de que desea eliminar este producto?')) {
+                products = products.filter(p => p.id !== id);
+                saveData();
+                renderProductTable();
+            }
+        }
+        
+        function renderProductTable() {
+            productsTableBody.innerHTML = '';
+            
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>${product.description}</td>
+                    <td>$${product.price.toFixed(2)}</td>
+                    <td>${product.stock}</td>
+                    <td class="action-column">
+                        <span class="action-icon edit" onclick="editProduct(${product.id})">✏️</span>
+                        <span class="action-icon delete" onclick="deleteProduct(${product.id})">🗑️</span>
+                    </td>
+                `;
+                
+                productsTableBody.appendChild(row);
+            });
+        }
+        
+        // Voucher Functions
+        function renderVoucherTable() {
+            vouchersTableBody.innerHTML = '';
+            
+            // Sort vouchers by date (newest first)
+            const sortedVouchers = [...vouchers].sort((a, b) => 
+                new Date(b.date) - new Date(a.date)
+            );
+            
+            sortedVouchers.forEach(voucher => {
+                const date = new Date(voucher.date);
+                const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+                
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${voucher.clientName}</td>
+                    <td>${voucher.accountNumber}</td>
+                    <td>${formattedDate}</td>
+                    <td>$${voucher.amount.toFixed(2)}</td>
+                    <td>${voucher.type}</td>
+                    <td class="action-column">
+                        <span class="action-icon" onclick="viewVoucher(${voucher.id})">👁️</span>
+                    </td>
+                `;
+                
+                vouchersTableBody.appendChild(row);
+            });
+        }
+        
+        function viewVoucher(id) {
+            const voucher = vouchers.find(v => v.id === id);
+            
+            if (voucher) {
+                const date = new Date(voucher.date);
+                const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+                
+                // Set voucher info
+                voucherInfoContent.innerHTML = `
+                    <div class="voucher-info-row">
+                        <span>Cliente:</span>
+                        <span>${voucher.clientName}</span>
+                    </div>
+                    <div class="voucher-info-row">
+                        <span>Cuenta:</span>
+                        <span>${voucher.accountNumber}</span>
+                    </div>
+                    <div class="voucher-info-row">
+                        <span>Fecha:</span>
+                        <span>${formattedDate}</span>
+                    </div>
+                    <div class="voucher-info-row">
+                        <span>Tipo:</span>
+                        <span>${voucher.type}</span>
+                    </div>
+                `;
+                
+                // Set bill denominations (only for withdrawals)
+                if (voucher.type === 'Retiro' && voucher.bills) {
+                    let billsHtml = '<div style="margin-bottom: 5px;">Desglose de billetes:</div>';
+                    
+                    for (const bill in voucher.bills) {
+                        if (voucher.bills[bill] > 0) {
+                            billsHtml += `
+                                <div class="voucher-info-row">
+                                    <span>${voucher.bills[bill]} x $${bill}</span>
+                                    <span>$${(voucher.bills[bill] * parseInt(bill)).toFixed(2)}</span>
+                                </div>
+                            `;
+                        }
+                    }
+                    
+                    voucherBillsContent.innerHTML = billsHtml;
+                    voucherBillsContent.style.display = 'block';
+                } else {
+                    voucherBillsContent.style.display = 'none';
+                }
+                
+             
+                voucherTotalContent.textContent = `Total: $${voucher.amount.toFixed(2)}`;
+                
+                
+                voucherDetail.classList.remove('hidden');
+            }
+        }
+        
+        
+        function generateId(array) {
+            return array.length > 0 ? Math.max(...array.map(item => item.id)) + 1 : 1;
+        }
+        
+        // Make functions accessible from HTML
+        window.editClient = editClient;
+        window.deleteClient = deleteClient;
+        window.editProduct = editProduct;
+        window.deleteProduct = deleteProduct;
+        window.viewVoucher = viewVoucher;
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
-
-<!-- cooked ;) -->
